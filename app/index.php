@@ -56,6 +56,7 @@
 <!-- products scripts -->
 <script src="users/login.js"></script>
 <script src="users/register.js"></script>
+<script src="users/all_users.js"></script>
 <script src="Tasks/home.js"></script>
 </body>
 </html>

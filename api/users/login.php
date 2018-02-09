@@ -19,24 +19,31 @@
     $data=json_decode(file_get_contents("php://input"));
     $user->u_email=$data->u_email;
     $user->u_password=$data->u_password;
-
-
-    //get user info
-    
-    if($user->login()){
-        
-        $user_arr=array(
-            "user_id"=>$user->user_id,
-            "u_name"=> $user->u_name,
-            "u_email"=> $user->u_email
-        );
-        //make it json format
+    $stmt=$user->login();
+    $num=$stmt->rowCount();
+    if($num>0){
+        $user_arr=array();
+        $user_arr["user"]=array();
+        while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($row);
+            $user_item=array(
+                "user_id" =>$user_id,
+                "u_name" => $u_name,
+                "u_email" => $u_email,
+                "u_password" =>$u_password,
+                "u_role" => $u_role,
+                "u_roleName"=>$u_roleName,
+                "created" => $created
+            );
+            array_push($user_arr["user"],$user_item);
+        }
         print_r(json_encode($user_arr));
     } else{
-        echo '{';
-            echo '"message": "Unable to login User."';
-        echo '}';
+        echo json_encode(
+            array("message" => "No User found.")
+        );
     }
+
  
    
 

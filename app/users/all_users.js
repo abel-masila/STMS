@@ -1,17 +1,19 @@
 $(document).ready(function(){
     //list all tasks on page load
-    showUsers();
+        showUsers();
 });
-// when a 'read products' button was clicked
-$(document).on('click', '.read-products-button', function(){
-    showUsers();
-});
+
 
 //function to show list of user
 function showUsers(){
-    $.getJSON("http://localhost:81/stms/api/users/read.php",function(data){
+    if(!localStorage.getItem("user_id")){
+        $.getJSON("http://localhost:81/stms/api/users/read.php",function(data){
+        if(!localStorage.getItem("user_id")){
+            
+        }
         // html for listing products
         var read_users_html="";
+       
         read_users_html+="<table class='table table-bordered table-hover'>";
             //Create table Heading
             read_users_html+="<tr>";
@@ -46,4 +48,8 @@ function showUsers(){
             // chage page title
             changePageTitle("Read Users");
     });
+    }else{
+        showTasks();
+    }
+    
 }

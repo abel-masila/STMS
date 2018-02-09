@@ -20,7 +20,6 @@
         //read users
         public function read(){
             //select all users query
-            $query="SELECT * FROM " . $this->table_name. "";
             $query="SELECT u.user_id,u.u_name,u.u_email,u.u_password,u.u_role,u.created, r.role_name as u_roleName 
                 FROM " . $this->table_name. " u
                 LEFT JOIN 
@@ -63,25 +62,21 @@
         //login user
         public function login(){
             //Query to get user
-            $query="SELECT * FROM users WHERE u_email=:u_email   LIMIT 1";
+            $query="SELECT u.user_id,u.u_name,u.u_email,u.u_password,u.u_role,u.created, r.role_name as u_roleName 
+            FROM " . $this->table_name. " u
+            LEFT JOIN 
+            roles r  ON u.u_role=r.role_id
+            WHERE u.u_email=:u_email  AND u.u_password=:u_password  LIMIT 1
+        ";
             //prepare sql statement
             $stmt=$this->conn->prepare($query);
            
             //bind email to be logged in
             $stmt->bindParam(":u_email",$this->u_email);
+            $stmt->bindParam(":u_password",$this->u_password);
             //execute query
-            if($stmt->execute()){
-               
-                //get retrived row
-                $row=$stmt->fetch(PDO::FETCH_ASSOC);
-
-                //set the values to object properties
-                $this->user_id=$row['user_id'];
-                $this->u_name=$row['u_name'];
-                $this->u_email=$row['u_email'];
-                return true;
-            }
-           return false;
+            $stmt->execute();
+            return $stmt;
             
         }
     }

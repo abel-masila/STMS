@@ -57,13 +57,14 @@ login_user_html+="</form>";
             type: "POST",
             data:form_data,
             contentType:'application/json',
-            success: function(res){               
-                console.log(res);
-                
-                if(!res.message){
-                    //Got to Tasks Page
+            success: function(res){
+                showTasks();
+                if(res.user){
+                    const user = res.user.pop();
+                    localStorage.setItem("user_id", user.user_id);
                     showTasks();
-                } else{
+                }
+                 else{
                     var error_message="";
                     error_message+="<h3 class='alert alert-danger'> Wrong email or Password!</h3>";
                     // inject to 'page-content' of our app
