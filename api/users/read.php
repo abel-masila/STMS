@@ -35,6 +35,7 @@
                 "u_email" => $u_email,
                 "u_password" =>$u_password,
                 "u_role" => $u_role,
+                "u_roleName"=>$u_roleName,
                 "created" => $created
             );
             array_push($users_arr["users"],$user_item);
